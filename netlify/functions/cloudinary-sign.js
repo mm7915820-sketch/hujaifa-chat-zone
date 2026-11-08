@@ -27,12 +27,10 @@ exports.handler = async (event) => {
 
   try {
     const secret = process.env.CLOUDINARY_API_SECRET;
+    if (!secret) throw new Error("Secret missing");
 
-    if (!secret) {
-      throw new Error("Cloudinary secret is missing");
-    }
-
-    const token = (event.headers.authorization || "").replace(/^Bearer\s+/i, "");
+    const token = (event.headers.authorization || "")
+      .replace(/^Bearer\s+/i, "");
 
     if (!token) {
       return {
@@ -42,7 +40,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const verifyResponse = await fetch(
+    const verify = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,
       {
         method: "POST",
@@ -51,7 +49,7 @@ exports.handler = async (event) => {
       }
     );
 
-    if (!verifyResponse.ok) {
+    if (!verify.ok) {
       return {
         statusCode: 401,
         headers,
@@ -59,26 +57,17 @@ exports.handler = async (event) => {
       };
     }
 
-    const body = JSON.parse(event.body || "{}");
-    const timestamp = Number(body.timestamp);
-
-    if (!Number.isSafeInteger(timestamp) || timestamp <= 0) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: "Invalid timestamp" })
-      };
-    }
+    const timestamp = Math.floor(Date.now() / 1000);
 
     const params = {
       timestamp,
       upload_preset: UPLOAD_PRESET
     };
 
-    const signatureString = Object.keys(params)
-      .sort()
-      .map((key) => `${key}=${params[key]}`)
-      .join("&") + secret;
+    const signatureString =
+      Object.keys(params).sort()
+        .map(key => `${key}=${params[key]}`)
+        .join("&") + secret;
 
     const signature = crypto
       .createHash("sha1")
@@ -89,18 +78,21 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        signature,
         timestamp,
+        signature,
         apiKey: API_KEY,
         cloudName: CLOUD_NAME,
         uploadPreset: UPLOAD_PRESET
       })
     };
+
   } catch (error) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: "Signature তৈরি করা যায়নি" })
+      body: JSON.stringify({
+        error: "Signature তৈরি করা যায়নি"
+      })
     };
   }
 };
