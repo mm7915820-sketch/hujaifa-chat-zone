@@ -31,49 +31,17 @@ button.secondary{background:#e7f3f1;color:var(--green)}button.danger{background:
 .sendbar{align-items:center}.sendbar button{flex-shrink:0}
 #mediaBtn{font-size:20px;padding:8px 12px}
 footer{text-align:center;color:#87939a;font-size:11px;padding:8px}
-
-/* Full-screen image viewer */
-#imageViewer{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.96);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:99999;
-  padding:15px;
-}
+#imageViewer{position:fixed;inset:0;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;z-index:99999;padding:15px}
 #imageViewer.open{display:flex}
-#imageViewer img{
-  max-width:100%;
-  max-height:90%;
-  width:auto;
-  height:auto;
-  object-fit:contain;
-}
-#imageViewerClose{
-  position:absolute;
-  top:15px;
-  right:15px;
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background:#fff;
-  color:#111;
-  font-size:30px;
-  line-height:1;
-  padding:0;
-}
+#imageViewer img{max-width:100%;max-height:90%;width:auto;height:auto;object-fit:contain}
+#imageViewerClose{position:absolute;top:15px;right:15px;width:44px;height:44px;border-radius:50%;background:#fff;color:#111;font-size:30px;line-height:1;padding:0}
 </style>
 </head>
 <body>
 <div class="app">
 <header><div><div class="brand">HUJAIFA chat zone</div><div class="sub">Connect with friends • Chat privately</div></div><button id="logoutBtn" class="secondary hidden">Logout</button></header>
-<div id="notice">Firebase সেটআপ না করা পর্যন্ত Login/Chat কাজ করবে না। নিচের README অনুসরণ করে সেটআপ করো।</div>
-
-<section id="auth" class="hidden">
-<main>
-<div class="card">
+<div id="notice">Firebase সেটআপ না করা পর্যন্ত Login/Chat কাজ করবে না।</div>
+<section id="auth" class="hidden"><main><div class="card">
 <h2 id="authTitle">Create account</h2>
 <div id="nameWrap"><label>তোমার নাম</label><input id="displayName" maxlength="40" placeholder="যেমন: Hujaifa"></div>
 <label>Email</label><input id="email" type="email" autocomplete="email" placeholder="name@example.com">
@@ -81,52 +49,30 @@ footer{text-align:center;color:#87939a;font-size:11px;padding:8px}
 <button id="authBtn" style="width:100%">Create account</button>
 <p class="hint" id="authSwitch">আগে অ্যাকাউন্ট আছে? <a href="#" id="switchLink">Login</a></p>
 <p class="hint">সুরক্ষার জন্য শক্তিশালী পাসওয়ার্ড ব্যবহার করো। অন্যের সঙ্গে পাসওয়ার্ড শেয়ার কোরো না।</p>
-</div>
-</main>
-</section>
-
-<section id="home" class="hidden">
-<main>
-<div class="card">
-<h2>বন্ধু খুঁজুন</h2>
-<div class="row"><input id="searchEmail" type="email" placeholder="বন্ধুর exact email লিখুন"><button id="searchBtn">Search</button></div>
-<div id="searchResult" class="hint"></div>
-</div>
-<div class="card">
-<h2>তোমার বন্ধুরা</h2>
-<div id="friendsList" class="hint">বন্ধুদের তালিকা লোড হচ্ছে...</div>
-</div>
-<div class="card">
-<h2>তোমার অ্যাকাউন্ট</h2>
-<div id="myProfile" class="hint"></div>
-</div>
-</main>
-</section>
-
+</div></main></section>
+<section id="home" class="hidden"><main>
+<div class="card"><h2>বন্ধু খুঁজুন</h2><div class="row"><input id="searchEmail" type="email" placeholder="বন্ধুর exact email লিখুন"><button id="searchBtn">Search</button></div><div id="searchResult" class="hint"></div></div>
+<div class="card"><h2>তোমার বন্ধুরা</h2><div id="friendsList" class="hint">বন্ধুদের তালিকা লোড হচ্ছে...</div></div>
+<div class="card"><h2>তোমার অ্যাকাউন্ট</h2><div id="myProfile" class="hint"></div></div>
+</main></section>
 <section id="chatPanel" class="hidden">
 <div class="chathead"><button id="backBtn" class="secondary">←</button><div class="userinfo"><div class="avatar" id="chatAvatar">?</div><div><b id="chatName">Friend</b><div class="status" id="chatFriendStatus">Status দেখা হচ্ছে...</div></div></div></div>
 <div id="messages"></div>
 <div class="sendbar">
-  <input id="messageInput" maxlength="2000" placeholder="Message লিখুন...">
-  <button id="mediaBtn" type="button" class="secondary" title="ছবি বা ভিডিও পাঠান">＋</button>
-  <input id="mediaInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" class="hidden">
-  <button id="sendBtn">➤</button>
+<input id="messageInput" maxlength="2000" placeholder="Message লিখুন...">
+<button id="mediaBtn" type="button" class="secondary" title="ছবি বা ভিডিও পাঠান">＋</button>
+<input id="mediaInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" class="hidden">
+<button id="sendBtn">➤</button>
 </div>
 <div id="uploadStatus" class="hint" style="padding:0 12px 8px"></div>
 </section>
 <footer>HUJAIFA chat zone · Keep your account safe</footer>
 </div>
-
-<!-- Full-screen image viewer -->
-<div id="imageViewer" aria-hidden="true">
-  <button id="imageViewerClose" type="button" aria-label="ছবি বন্ধ করুন">×</button>
-  <img id="imageViewerImg" alt="বড় ছবি">
-</div>
-
+<div id="imageViewer" aria-hidden="true"><button id="imageViewerClose" type="button" aria-label="ছবি বন্ধ করুন">×</button><img id="imageViewerImg" alt="বড় ছবি"></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, addDoc, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, collection, query, where, getDocs, addDoc, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getDatabase, ref, onValue, onDisconnect, set, serverTimestamp as rtdbServerTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -139,119 +85,87 @@ const firebaseConfig = {
   measurementId: "G-NSDR731DCM",
   databaseURL: "https://hujaifa-chat-zone-default-rtdb.firebaseio.com"
 };
-
-// Cloudinary public settings. API Secret stays only in Netlify environment variables.
 const CLOUDINARY_CLOUD_NAME = "gzo69clf";
 const CLOUDINARY_API_KEY = "444915729817112";
 const CLOUDINARY_UPLOAD_PRESET = "hujaifa_chat_uploads";
 const MAX_MEDIA_BYTES = 15 * 1024 * 1024;
-
 const $ = id => document.getElementById(id);
 const notice = $("notice");
 
-/* Image viewer controls */
 function showImageViewer(src){
-  $("imageViewerImg").src = src;
+  $("imageViewerImg").src=src;
   $("imageViewer").classList.add("open");
   $("imageViewer").setAttribute("aria-hidden","false");
 }
 function closeImageViewer(){
   $("imageViewer").classList.remove("open");
   $("imageViewer").setAttribute("aria-hidden","true");
-  $("imageViewerImg").src = "";
+  $("imageViewerImg").src="";
 }
-$("imageViewerClose").addEventListener("click", closeImageViewer);
-$("imageViewer").addEventListener("click", e => {
-  if(e.target === $("imageViewer")) closeImageViewer();
-});
-document.addEventListener("keydown", e => {
-  if(e.key === "Escape") closeImageViewer();
-});
+$("imageViewerClose").addEventListener("click",closeImageViewer);
+$("imageViewer").addEventListener("click",e=>{if(e.target===$("imageViewer"))closeImageViewer()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeImageViewer()});
 
-let app, auth, db, realtimeDb, currentUser, isRegister = true, activeFriend = null, stopMessages = null;
-let stopConnection = null, stopChatFriendStatus = null;
-let friendStatusStops = [];
-
-const show = id => $(id).classList.remove("hidden");
-const hide = id => $(id).classList.add("hidden");
-const safeText = s => String(s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const chatId = (a,b) => [a,b].sort().join("_");
+let app,auth,db,realtimeDb,currentUser,isRegister=true,activeFriend=null,stopMessages=null;
+let stopConnection=null,stopChatFriendStatus=null;
+let friendStatusStops=[];
+const show=id=>$(id).classList.remove("hidden");
+const hide=id=>$(id).classList.add("hidden");
+const chatId=(a,b)=>[a,b].sort().join("_");
 
 function setMode(register){
-  isRegister = register;
-  $("authTitle").textContent = register ? "Create account" : "Login";
-  $("authBtn").textContent = register ? "Create account" : "Login";
-  $("nameWrap").classList.toggle("hidden", !register);
-  $("authSwitch").innerHTML = register ? 'আগে অ্যাকাউন্ট আছে? <a href="#" id="switchLink">Login</a>' : 'নতুন এখানে? <a href="#" id="switchLink">Create account</a>';
-  $("switchLink").onclick = e => {e.preventDefault();setMode(!isRegister)};
+  isRegister=register;
+  $("authTitle").textContent=register?"Create account":"Login";
+  $("authBtn").textContent=register?"Create account":"Login";
+  $("nameWrap").classList.toggle("hidden",!register);
+  $("authSwitch").innerHTML=register?'আগে অ্যাকাউন্ট আছে? <a href="#" id="switchLink">Login</a>':'নতুন এখানে? <a href="#" id="switchLink">Create account</a>';
+  $("switchLink").onclick=e=>{e.preventDefault();setMode(!isRegister)};
 }
 function message(text){notice.textContent=text;notice.classList.remove("hidden")}
 
 function startPresence(user){
-  const myStatusRef = ref(realtimeDb, "status/" + user.uid);
-  const connectedRef = ref(realtimeDb, ".info/connected");
-  if(stopConnection) stopConnection();
-
-  stopConnection = onValue(connectedRef, async snap => {
-    if(snap.val() !== true || !auth.currentUser || auth.currentUser.uid !== user.uid) return;
+  const myStatusRef=ref(realtimeDb,"status/"+user.uid);
+  const connectedRef=ref(realtimeDb,".info/connected");
+  if(stopConnection)stopConnection();
+  stopConnection=onValue(connectedRef,async snap=>{
+    if(snap.val()!==true||!auth.currentUser||auth.currentUser.uid!==user.uid)return;
     try{
-      await onDisconnect(myStatusRef).set({
-        state: "offline",
-        lastChanged: rtdbServerTimestamp()
-      });
-      await set(myStatusRef, {
-        state: "online",
-        lastChanged: rtdbServerTimestamp()
-      });
-    }catch(e){
-      message("Online status চালু হয়নি: " + e.message);
-    }
+      await onDisconnect(myStatusRef).set({state:"offline",lastChanged:rtdbServerTimestamp()});
+      await set(myStatusRef,{state:"online",lastChanged:rtdbServerTimestamp()});
+    }catch(e){message("Online status চালু হয়নি: "+e.message)}
   });
 }
-
-function clearFriendStatusListeners(){
-  friendStatusStops.forEach(stop => stop());
-  friendStatusStops = [];
+function clearFriendStatusListeners(){friendStatusStops.forEach(stop=>stop());friendStatusStops=[]}
+function watchFriendStatus(uid,callback){
+  const statusRef=ref(realtimeDb,"status/"+uid);
+  return onValue(statusRef,snap=>{
+    const data=snap.val();
+    callback(data&&data.state==="online"?"🟢 Online":"Offline");
+  },()=>callback("Status unavailable"));
 }
-function watchFriendStatus(uid, callback){
-  const statusRef = ref(realtimeDb, "status/" + uid);
-  return onValue(statusRef, snap => {
-    const data = snap.val();
-    callback(data && data.state === "online" ? "🟢 Online" : "Offline");
-  }, () => callback("Status unavailable"));
-}
-
 function initFirebase(){
-  app=initializeApp(firebaseConfig);
-  auth=getAuth(app);
-  db=getFirestore(app);
-  realtimeDb=getDatabase(app);
-  return true;
+  app=initializeApp(firebaseConfig);auth=getAuth(app);db=getFirestore(app);realtimeDb=getDatabase(app);return true;
 }
 if(initFirebase()){
   setMode(true);
-  onAuthStateChanged(auth, async user=>{
+  onAuthStateChanged(auth,async user=>{
     currentUser=user;
-    if(stopConnection){stopConnection();stopConnection=null;}
+    if(stopConnection){stopConnection();stopConnection=null}
     clearFriendStatusListeners();
-    if(stopMessages){stopMessages();stopMessages=null;}
-    if(stopChatFriendStatus){stopChatFriendStatus();stopChatFriendStatus=null;}
+    if(stopMessages){stopMessages();stopMessages=null}
+    if(stopChatFriendStatus){stopChatFriendStatus();stopChatFriendStatus=null}
     hide("auth");hide("home");hide("chatPanel");
     if(user){
       show("home");show("logoutBtn");
       $("myProfile").textContent=(user.displayName||"User")+" · "+user.email;
-      startPresence(user);
-      loadFriends();
+      startPresence(user);loadFriends();
       message("সফলভাবে প্রবেশ করা হয়েছে। Online status চালু আছে।");
-    }else{
-      show("auth");hide("logoutBtn");
-    }
+    }else{show("auth");hide("logoutBtn")}
   });
 }
-
 $("authBtn").onclick=async()=>{
-  const email=$("email").value.trim().toLowerCase(), password=$("password").value, name=$("displayName").value.trim();
-  if(!email||!password|| (isRegister&&!name)){message("সব তথ্য পূরণ করো।");return}
+  const email=$("email").value.trim().toLowerCase(),password=$("password").value,name=$("displayName").value.trim();
+  if(!email||!password||(isRegister&&!name)){message("সব তথ্য পূরণ করো।");return}
   try{
     if(isRegister){
       const cred=await createUserWithEmailAndPassword(auth,email,password);
@@ -262,20 +176,16 @@ $("authBtn").onclick=async()=>{
   }catch(e){message("সমস্যা হয়েছে: "+e.message)}
 };
 $("logoutBtn").onclick=async()=>{
-  try{
-    if(currentUser) await set(ref(realtimeDb,"status/"+currentUser.uid),{
-      state:"offline",lastChanged:rtdbServerTimestamp()
-    });
-  }catch(e){}
+  try{if(currentUser)await set(ref(realtimeDb,"status/"+currentUser.uid),{state:"offline",lastChanged:rtdbServerTimestamp()})}catch(e){}
   await signOut(auth);
 };
-
 async function findUser(email){
   const q=query(collection(db,"users"),where("email","==",email));
   const snap=await getDocs(q);return snap.empty?null:snap.docs[0].data();
 }
 $("searchBtn").onclick=async()=>{
-  const email=$("searchEmail").value.trim().toLowerCase();$("searchResult").textContent="খোঁজা হচ্ছে...";
+  const email=$("searchEmail").value.trim().toLowerCase();
+  $("searchResult").textContent="খোঁজা হচ্ছে...";
   if(!email||email===currentUser.email){$("searchResult").textContent="একটি অন্য বন্ধুর email লিখুন।";return}
   try{
     const u=await findUser(email);
@@ -296,7 +206,6 @@ $("searchBtn").onclick=async()=>{
     wrap.append(label,btn);$("searchResult").append(wrap);
   }catch(e){$("searchResult").textContent="Search error: "+e.message}
 };
-
 async function loadFriends(){
   const list=$("friendsList");list.textContent="লোড হচ্ছে...";
   clearFriendStatusListeners();
@@ -305,7 +214,7 @@ async function loadFriends(){
     list.innerHTML="";
     if(snap.empty){list.textContent="এখনো বন্ধু যোগ করোনি। উপরে email দিয়ে খুঁজে নাও।";return}
     snap.forEach(d=>{
-      const f=d.data(), row=document.createElement("div");row.className="user";
+      const f=d.data(),row=document.createElement("div");row.className="user";
       const info=document.createElement("div");info.className="userinfo";
       const av=document.createElement("div");av.className="avatar";av.textContent=(f.name||"?").slice(0,1).toUpperCase();
       const label=document.createElement("div");label.className="userlabel";
@@ -315,18 +224,17 @@ async function loadFriends(){
       label.append(name,email,status);info.append(av,label);
       const btn=document.createElement("button");btn.textContent="Chat";btn.onclick=()=>openChat(f);
       row.append(info,btn);list.append(row);
-      friendStatusStops.push(watchFriendStatus(f.uid, value=>{status.textContent=value;}));
+      friendStatusStops.push(watchFriendStatus(f.uid,value=>{status.textContent=value}));
     });
   }catch(e){list.textContent="বন্ধুদের তালিকা লোড হয়নি: "+e.message}
 }
-
 function openChat(friend){
   activeFriend=friend;
   $("chatName").textContent=friend.name||"Friend";
   $("chatAvatar").textContent=(friend.name||"?").slice(0,1).toUpperCase();
   $("chatFriendStatus").textContent="Status দেখা হচ্ছে...";
-  if(stopChatFriendStatus) stopChatFriendStatus();
-  stopChatFriendStatus=watchFriendStatus(friend.uid,value=>{$("chatFriendStatus").textContent=value;});
+  if(stopChatFriendStatus)stopChatFriendStatus();
+  stopChatFriendStatus=watchFriendStatus(friend.uid,value=>{$("chatFriendStatus").textContent=value});
   hide("home");show("chatPanel");$("messages").innerHTML="";$("uploadStatus").textContent="";
   if(stopMessages)stopMessages();
   const id=chatId(currentUser.uid,friend.uid);
@@ -334,101 +242,74 @@ function openChat(friend){
   stopMessages=onSnapshot(q,snap=>{
     const area=$("messages");area.innerHTML="";
     snap.forEach(d=>{
-      const m=d.data(), bubble=document.createElement("div");
+      const m=d.data(),bubble=document.createElement("div");
       bubble.className="bubble"+(m.senderId===currentUser.uid?" mine":"");
-      if(m.type==="image" && typeof m.mediaUrl==="string" && m.mediaUrl.startsWith("https://res.cloudinary.com/gzo69clf/")){
-        const media=document.createElement("img");
-        media.src=m.mediaUrl;
-        media.alt="Shared image";
-        media.loading="lazy";
-        media.style.cursor="zoom-in";
-        media.addEventListener("click",()=>{
-          showImageViewer(media.src);
-        });
-        bubble.append(media);
-      }else if(m.type==="video" && typeof m.mediaUrl==="string" && m.mediaUrl.startsWith("https://res.cloudinary.com/gzo69clf/")){
-        const media=document.createElement("video");
-        media.src=m.mediaUrl; media.controls=true; media.playsInline=true; media.preload="metadata";
-        bubble.append(media);
+      if(m.type==="image"&&typeof m.mediaUrl==="string"&&m.mediaUrl.startsWith("https://res.cloudinary.com/gzo69clf/")){
+        const media=document.createElement("img");media.src=m.mediaUrl;media.alt="Shared image";media.loading="lazy";media.style.cursor="zoom-in";
+        media.addEventListener("click",()=>showImageViewer(media.src));bubble.append(media);
+      }else if(m.type==="video"&&typeof m.mediaUrl==="string"&&m.mediaUrl.startsWith("https://res.cloudinary.com/gzo69clf/")){
+        const media=document.createElement("video");media.src=m.mediaUrl;media.controls=true;media.playsInline=true;media.preload="metadata";bubble.append(media);
       }
-      if(m.text){
-        const body=document.createElement("div");body.textContent=m.text; bubble.append(body);
-      }
+      if(m.text){const body=document.createElement("div");body.textContent=m.text;bubble.append(body)}
       const stamp=document.createElement("span");stamp.className="stamp";
       stamp.textContent=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
       bubble.append(stamp);area.append(bubble);
-    });area.scrollTop=area.scrollHeight;
+    });
+    area.scrollTop=area.scrollHeight;
   },e=>message("Message load error: "+e.message));
 }
-
-
 async function sendMediaFile(file){
-  if(!currentUser || !activeFriend){message("আগে বন্ধুর chat খুলুন।");return;}
-  const allowed = ["image/jpeg","image/png","image/webp","image/gif","video/mp4","video/webm","video/quicktime"];
-  if(!allowed.includes(file.type)){message("এই ফাইলটি সমর্থিত নয়। JPG, PNG, WEBP, GIF বা MP4/WEBM/MOV দিন।");return;}
-  if(file.size > MAX_MEDIA_BYTES){message("ফাইল ১৫ MB-এর ছোট হতে হবে।");return;}
-
-  const isVideo = file.type.startsWith("video/");
-  const status = $("uploadStatus");
-  $("mediaBtn").disabled = true;
-  $("sendBtn").disabled = true;
-  status.textContent = "নিরাপদভাবে upload প্রস্তুত হচ্ছে...";
+  if(!currentUser||!activeFriend){message("আগে বন্ধুর chat খুলুন।");return}
+  const allowed=["image/jpeg","image/png","image/webp","image/gif","video/mp4","video/webm","video/quicktime"];
+  if(!allowed.includes(file.type)){message("এই ফাইলটি সমর্থিত নয়। JPG, PNG, WEBP, GIF বা MP4/WEBM/MOV দিন।");return}
+  if(file.size>MAX_MEDIA_BYTES){message("ফাইল ১৫ MB-এর ছোট হতে হবে।");return}
+  const isVideo=file.type.startsWith("video/"),status=$("uploadStatus");
+  $("mediaBtn").disabled=true;$("sendBtn").disabled=true;
+  status.textContent="নিরাপদভাবে upload প্রস্তুত হচ্ছে...";
   try{
-    const idToken = await currentUser.getIdToken();
-    const signResponse = await fetch("/.netlify/functions/cloudinary-sign", {
-      method:"POST",
-      headers:{"Authorization":"Bearer "+idToken}
-    });
-    const signData = await signResponse.json().catch(()=>({}));
-    if(!signResponse.ok) throw new Error(signData.error || "Upload signature পাওয়া যায়নি।");
-
-    const form = new FormData();
-    form.append("file",file);
-    form.append("api_key",CLOUDINARY_API_KEY);
-    form.append("timestamp",String(signData.timestamp));
-    form.append("signature",signData.signature);
-    form.append("upload_preset",CLOUDINARY_UPLOAD_PRESET);
-
-    status.textContent = "ফাইল upload হচ্ছে...";
-    const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,{
-      method:"POST",body:form
-    });
-    const uploaded = await uploadResponse.json().catch(()=>({}));
-    if(!uploadResponse.ok) throw new Error(uploaded.error?.message || "Cloudinary upload ব্যর্থ হয়েছে।");
-    if(typeof uploaded.secure_url!=="string" || !uploaded.secure_url.startsWith("https://res.cloudinary.com/"+CLOUDINARY_CLOUD_NAME+"/")) {
-      throw new Error("Upload URL যাচাই করা যায়নি।");
-    }
-
+    const idToken=await currentUser.getIdToken();
+    const signResponse=await fetch("/.netlify/functions/cloudinary-sign",{method:"POST",headers:{"Authorization":"Bearer "+idToken}});
+    const signData=await signResponse.json().catch(()=>({}));
+    if(!signResponse.ok)throw new Error(signData.error||"Upload signature পাওয়া যায়নি।");
+    const form=new FormData();form.append("file",file);form.append("api_key",CLOUDINARY_API_KEY);
+    form.append("timestamp",String(signData.timestamp));form.append("signature",signData.signature);form.append("upload_preset",CLOUDINARY_UPLOAD_PRESET);
+    status.textContent="ফাইল upload হচ্ছে...";
+    const uploadResponse=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,{method:"POST",body:form});
+    const uploaded=await uploadResponse.json().catch(()=>({}));
+    if(!uploadResponse.ok)throw new Error(uploaded.error?.message||"Cloudinary upload ব্যর্থ হয়েছে।");
+    if(typeof uploaded.secure_url!=="string"||!uploaded.secure_url.startsWith("https://res.cloudinary.com/"+CLOUDINARY_CLOUD_NAME+"/"))throw new Error("Upload URL যাচাই করা যায়নি।");
     const id=chatId(currentUser.uid,activeFriend.uid);
-    await addDoc(collection(db,"chats",id,"messages"),{
-      type:isVideo?"video":"image",
-      text:"",
-      mediaUrl:uploaded.secure_url,
-      senderId:currentUser.uid,
-      createdAt:serverTimestamp()
-    });
+    await addDoc(collection(db,"chats",id,"messages"),{type:isVideo?"video":"image",text:"",mediaUrl:uploaded.secure_url,senderId:currentUser.uid,createdAt:serverTimestamp()});
     await setDoc(doc(db,"chats",id),{members:[currentUser.uid,activeFriend.uid],updatedAt:serverTimestamp()},{merge:true});
-    status.textContent = "ফাইল পাঠানো হয়েছে।";
-  }catch(e){
-    status.textContent = "";
-    message("ফাইল পাঠানো যায়নি: "+e.message);
-  }finally{
-    $("mediaBtn").disabled=false;
-    $("sendBtn").disabled=false;
-    $("mediaInput").value="";
-  }
+    status.textContent="ফাইল পাঠানো হয়েছে।";
+  }catch(e){status.textContent="";message("ফাইল পাঠানো যায়নি: "+e.message)}
+  finally{$("mediaBtn").disabled=false;$("sendBtn").disabled=false;$("mediaInput").value=""}
 }
 $("mediaBtn").onclick=()=>{
-  if(!activeFriend){message("আগে বন্ধুর chat খুলুন।");return;}
+  if(!activeFriend){message("আগে বন্ধুর chat খুলুন।");return}
   $("mediaInput").click();
 };
-$("mediaInput").addEventListener("change",e=>{
-  const file=e.target.files?.[0];
-  if(file) sendMediaFile(file);
-});
+$("mediaInput").addEventListener("change",e=>{const file=e.target.files?.[0];if(file)sendMediaFile(file)});
 
 async function send(){
-  const text=$("messageInput").value.trim();if(!text||!activeFriend)return;
+  const text=$("messageInput").value.trim();
+  if(!text||!activeFriend||!currentUser)return;
   $("sendBtn").disabled=true;
   try{
-    const id=chatId(currentUser.uid,
+    const id=chatId(currentUser.uid,activeFriend.uid);
+    await addDoc(collection(db,"chats",id,"messages"),{type:"text",text,senderId:currentUser.uid,createdAt:serverTimestamp()});
+    await setDoc(doc(db,"chats",id),{members:[currentUser.uid,activeFriend.uid],updatedAt:serverTimestamp()},{merge:true});
+    $("messageInput").value="";
+  }catch(e){message("মেসেজ পাঠানো যায়নি: "+e.message)}
+  finally{$("sendBtn").disabled=false}
+}
+$("sendBtn").onclick=send;
+$("messageInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();send()}});
+$("backBtn").onclick=()=>{
+  if(stopMessages){stopMessages();stopMessages=null}
+  if(stopChatFriendStatus){stopChatFriendStatus();stopChatFriendStatus=null}
+  activeFriend=null;hide("chatPanel");show("home");
+};
+</script>
+</body>
+</html>
