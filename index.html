@@ -31,6 +31,39 @@ button.secondary{background:#e7f3f1;color:var(--green)}button.danger{background:
 .sendbar{align-items:center}.sendbar button{flex-shrink:0}
 #mediaBtn{font-size:20px;padding:8px 12px}
 footer{text-align:center;color:#87939a;font-size:11px;padding:8px}
+
+/* Full-screen image viewer */
+#imageViewer{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.96);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  padding:15px;
+}
+#imageViewer.open{display:flex}
+#imageViewer img{
+  max-width:100%;
+  max-height:90%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+#imageViewerClose{
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  font-size:30px;
+  line-height:1;
+  padding:0;
+}
 </style>
 </head>
 <body>
@@ -84,6 +117,12 @@ footer{text-align:center;color:#87939a;font-size:11px;padding:8px}
 <footer>HUJAIFA chat zone · Keep your account safe</footer>
 </div>
 
+<!-- Full-screen image viewer -->
+<div id="imageViewer" aria-hidden="true">
+  <button id="imageViewerClose" type="button" aria-label="ছবি বন্ধ করুন">×</button>
+  <img id="imageViewerImg" alt="বড় ছবি">
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -109,6 +148,26 @@ const MAX_MEDIA_BYTES = 15 * 1024 * 1024;
 
 const $ = id => document.getElementById(id);
 const notice = $("notice");
+
+/* Image viewer controls */
+function showImageViewer(src){
+  $("imageViewerImg").src = src;
+  $("imageViewer").classList.add("open");
+  $("imageViewer").setAttribute("aria-hidden","false");
+}
+function closeImageViewer(){
+  $("imageViewer").classList.remove("open");
+  $("imageViewer").setAttribute("aria-hidden","true");
+  $("imageViewerImg").src = "";
+}
+$("imageViewerClose").addEventListener("click", closeImageViewer);
+$("imageViewer").addEventListener("click", e => {
+  if(e.target === $("imageViewer")) closeImageViewer();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeImageViewer();
+});
+
 let app, auth, db, realtimeDb, currentUser, isRegister = true, activeFriend = null, stopMessages = null;
 let stopConnection = null, stopChatFriendStatus = null;
 let friendStatusStops = [];
@@ -279,7 +338,13 @@ function openChat(friend){
       bubble.className="bubble"+(m.senderId===currentUser.uid?" mine":"");
       if(m.type==="image" && typeof m.mediaUrl==="string" && m.mediaUrl.startsWith("https://res.cloudinary.com/gzo69clf/")){
         const media=document.createElement("img");
-        media.src=m.mediaUrl; media.alt="Shared image"; media.loading="lazy";
+        media.src=m.mediaUrl;
+        media.alt="Shared image";
+        media.loading="lazy";
+        media.style.cursor="zoom-in";
+        media.addEventListener("click",()=>{
+          showImageViewer(media.src);
+        });
         bubble.append(media);
       }else if(m.type==="video" && typeof m.mediaUrl==="string" && m.mediaUrl.startsWith("https://res.cloudinary.com/gzo69clf/")){
         const media=document.createElement("video");
@@ -366,20 +431,4 @@ async function send(){
   const text=$("messageInput").value.trim();if(!text||!activeFriend)return;
   $("sendBtn").disabled=true;
   try{
-    const id=chatId(currentUser.uid,activeFriend.uid);
-    await addDoc(collection(db,"chats",id,"messages"),{type:"text",text,senderId:currentUser.uid,createdAt:serverTimestamp()});
-    await setDoc(doc(db,"chats",id),{members:[currentUser.uid,activeFriend.uid],updatedAt:serverTimestamp()},{merge:true});
-    $("messageInput").value="";
-  }catch(e){message("মেসেজ পাঠানো যায়নি: "+e.message)}
-  finally{$("sendBtn").disabled=false}
-}
-$("sendBtn").onclick=send;
-$("messageInput").addEventListener("keydown",e=>{if(e.key==="Enter")send()});
-$("backBtn").onclick=()=>{
-  if(stopMessages){stopMessages();stopMessages=null;}
-  if(stopChatFriendStatus){stopChatFriendStatus();stopChatFriendStatus=null;}
-  hide("chatPanel");show("home");
-};
-</script>
-</body>
-</html>
+    const id=chatId(currentUser.uid,
